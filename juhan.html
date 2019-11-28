@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 40, right: 30, bottom: 45, left: 50},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/JuhanChoi/Fall-2019-Data-Visualization/master/juhan.csv", function(data) {
+
+  // Add X axis
+  var x = d3.scaleLinear()
+    .domain([0, 2])
+    .range([ 0, width ]);
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, 10])
+    .range([ height, 0]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  // Add X axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width/2 + 60)
+    .attr("y", height + margin.top - 10)
+    .style("font-size", "11px")
+    .text("Precipitation (inch)");
+
+  // Add Y axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top - height/2 + 90)
+    .style("font-size", "11px")
+    .text("Distance (mile)");
+
+  // Add Head
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 10)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text("Precipitation vs Distance");
+
+  // Add dots of Avinash data
+  svg.append('g')
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.Precipitation); } )
+      .attr("cy", function (d) { return y(d.Avinash_Distance); } )
+      .attr("r", 1.5)
+      .style("fill", "Red")
+
+  // Add dots of Juhan data
+  svg.append('g')
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.Precipitation); } )
+      .attr("cy", function (d) { return y(d.Juhan_Distance); } )
+      .attr("r", 1.5)
+      .style("fill", "Orange")
+
+  // Add dots of Daniel data
+  svg.append('g')
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.Precipitation); } )
+      .attr("cy", function (d) { return y(d.Daniel_Distance); } )
+      .attr("r", 1.5)
+      .style("fill", "Yellow")
+
+  // Add dots of Viet data
+  svg.append('g')
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.Precipitation); } )
+      .attr("cy", function (d) { return y(d.Viet_Distance); } )
+      .attr("r", 1.5)
+      .style("fill", "Green")
+
+  // Add dots of Average data
+  svg.append('g')
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.Precipitation); } )
+      .attr("cy", function (d) { return y(d.Avg_Distance); } )
+      .attr("r", 1.5)
+      .style("fill", "Blue")
+
+// Handmade legend
+svg.append("circle").attr("cx",300).attr("cy",70).attr("r", 6).style("fill", "Red")
+svg.append("circle").attr("cx",300).attr("cy",90).attr("r", 6).style("fill", "Orange")
+svg.append("circle").attr("cx",300).attr("cy",110).attr("r", 6).style("fill", "Yellow")
+svg.append("circle").attr("cx",300).attr("cy",130).attr("r", 6).style("fill", "Green")
+svg.append("circle").attr("cx",300).attr("cy",150).attr("r", 6).style("fill", "Blue")
+svg.append("text").attr("x", 320).attr("y", 70).text("Avinash").style("font-size", "10px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 320).attr("y", 90).text("Juhan").style("font-size", "10px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 320).attr("y", 110).text("Daniel").style("font-size", "10px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 320).attr("y", 130).text("Viet").style("font-size", "10px").attr("alignment-baseline","middle")
+svg.append("text").attr("x", 320).attr("y", 150).text("Average").style("font-size", "10px").attr("alignment-baseline","middle")
+
+})
+
+</script>
